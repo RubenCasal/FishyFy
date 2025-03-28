@@ -5,12 +5,16 @@
 ## 📌 Introduction
 This repository provides a highly optimized pipeline to transform a YOLO dataset from **Roboflow format** into a **fisheye-transformed dataset**, distorting both images and bounding boxes. It is designed to simulate the view of **fisheye cameras** (e.g., **Intel RealSense T265**), making it suitable for training vision models under wide-angle lens effects.
 
-## ⚙️ Features
-- Multi-core parallel processing using `ProcessPoolExecutor`.
-- Efficient bounding box remapping with contour analysis.
-- Lookup Table (LUT) to accelerate fisheye distortion.
-- YOLO-compatible output format.
-- Automatically updates `data.yaml`.
+## Original Bounding Box
+<p align="center">
+<img src="./readme_images/anotation1.jpg" alt="Original Bounding Box" width="400">
+</p>
+
+### Fisheye Bounding Box
+<p align="center">
+    <img src="./readme_images/anotation2.jpg" alt="Fisheye Bounding Box" width="400">
+</p>
+
 
 ## 📚 Dataset Format
 ```
@@ -37,7 +41,9 @@ Dataset/
 
 3. **Radial Distortion Equation**:
    For a pixel at distance \( r \):
-  r' = tan( (r / R_max) * (π / 2) * s ) * R_max / tan((π / 2) * s)
+    <p align="center">
+    <img src="./readme_images/radial_equation.png" alt="Radial Distortion Equation" width="350">
+   </p>
 
    where:
    - r: original radius
@@ -69,10 +75,7 @@ Dataset/
 - LUT is computed **once** and passed to each subprocess.
 - Each process runs `process_single_image()` independently.
 
-## 🛠️ Requirements
-```bash
-pip install opencv-python numpy pyyaml
-```
+
 
 ## 🔧 How to Use
 ```python
@@ -112,14 +115,5 @@ cv2.imwrite("output/image1_preview.jpg", image_with_boxes)
 - Bounding boxes remain rectangular.
 - The outer circular region might remove objects near edges.
 
-## ⚛️ Future Improvements
-- Polygon-based annotations.
-- GPU-accelerated remapping via OpenCV CUDA.
-- Export to COCO/YOLOv8 format.
 
----
-
-Created by [Ruben Casal Ferrero](https://github.com/RubenCasal)
-
-> If you use this for your project, consider giving a star to the repo!
 
